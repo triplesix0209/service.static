@@ -14,19 +14,18 @@ namespace TripleSix.Static.Middle.Services
     public class UploadService : CommonService,
         IUploadService
     {
-        protected const string _uploadDir = "Upload";
+        protected const string _uploadDir = "Uploads";
 
         public ISettingService SettingService { get; set; }
 
         public async Task<UploadResultDto[]> UploadFile(IIdentity identity, UploadInputDto input)
         {
-            // skip case
+            #region [skip cases]
+
             if (input.Files.IsNullOrEmpty())
                 return Array.Empty<UploadResultDto>();
 
-            // prepare
-            if (!Directory.Exists(_uploadDir))
-                Directory.CreateDirectory(_uploadDir);
+            #endregion
 
             #region [validate]
 
@@ -48,21 +47,46 @@ namespace TripleSix.Static.Middle.Services
 
             #endregion
 
+            var now = DateTime.UtcNow;
             var result = new List<UploadResultDto>();
             foreach (var file in input.Files)
             {
+                #region [generate file name]
+
                 string fileName;
                 if (input.GenerateFileName == true)
                     fileName = Guid.NewGuid().ToString("N").ToLower() + Path.GetExtension(file.FileName);
                 else
                     fileName = file.FileName;
 
-                using var stream = File.Create(Path.Combine(_uploadDir, fileName));
+                #endregion
+
+                #region [prepare]
+
+                var uploadDir = Path.Combine(
+                        _uploadDir,
+                        file.ContentType.Split("/")[0],
+                        now.Year.ToString(),
+                        now.Month.ToString("00"),
+                        now.Day.ToString("00"));
+
+                if (!Directory.Exists(uploadDir))
+                    Directory.CreateDirectory(uploadDir);
+
+                var uploadUrl = $"{file.ContentType.Split("/")[0]}/{now.Year}/{now.Month.ToString("00")}/{now.Day.ToString("00")}";
+
+                #endregion
+
+                #region [write file]
+
+                using var stream = File.Create(Path.Combine(uploadDir, fileName));
                 await file.CopyToAsync(stream);
+
+                #endregion
 
                 result.Add(new UploadResultDto
                 {
-                    Url = new Uri($"{setting.BaseResultUrl}/{fileName}"),
+                    Url = new Uri($"{setting.BaseResultUrl}/{uploadUrl}/{fileName}"),
                 });
             }
 
