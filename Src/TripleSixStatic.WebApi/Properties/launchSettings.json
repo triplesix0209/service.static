@@ -1,0 +1,10 @@
+{
+	"profiles": {
+		"TripleSix.Static.WebApi": {
+			"commandName": "Project",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Local"
+			}
+		}
+	}
+}

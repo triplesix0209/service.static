@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  dmcl.crawler.api:
+    image: dmcl.crawler.api
+    container_name: dmcl.crawler.api
+    build:
+      context: .
+      dockerfile: Src/TripleSix.Static.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production

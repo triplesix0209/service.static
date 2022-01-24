@@ -1,0 +1,13 @@
+*.DotSettings.user
+*.csproj.user
+*.log
+*.pubxml.user
+.VSCodeCounter/
+.nuget/
+.vs/
+Dist/
+Logs/
+bin/
+harbor.cptech.vn.pubxml.user
+key.jwk
+obj/
