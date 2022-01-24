@@ -19,9 +19,9 @@ namespace TripleSix.Static.WebApi
             var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             var config = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
                 .AddJsonFile(Path.Combine("Config", "appsettings.json"), true)
                 .AddJsonFile(Path.Combine("Config", $"appsettings.{envName}.json"), true)
+                .AddEnvironmentVariables()
                 .AddCommandLine(args)
                 .Build();
 

@@ -43,7 +43,7 @@ namespace TripleSix.Static.WebApi
         {
             base.ConfigureSwagger(options);
 
-            options.SwaggerDoc("api", new OpenApiInfo { Title = "API Document", Version = "1.0" });
+            options.SwaggerDoc("api", new OpenApiInfo { Title = "Static API Document", Version = "1.0" });
 
             options.OperationFilter<HeaderIdentityOperationFilter>();
         }

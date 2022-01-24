@@ -1,5 +1,6 @@
 ﻿#pragma warning disable SA1201 // ElementsMustAppearInTheCorrectOrder
 
+using TripleSix.Core.Attributes;
 using TripleSix.Core.Exceptions;
 
 namespace TripleSix.Static.Common
@@ -26,7 +27,13 @@ namespace TripleSix.Static.Common
 
     public enum AppExceptions
     {
-        //[ErrorData(400, message: "msg")]
-        //ErrorCode,
+        [ErrorData(500, message: "setting 'baseResultUrl' is invalid")]
+        BaseResultUrlInvalid,
+
+        [ErrorData(400, message: "mine type {0} is not allowed")]
+        MineTypeNotAllow,
+
+        [ErrorData(400, message: "file size ({0}) is not allowed")]
+        FileSizeNotAllow,
     }
 }

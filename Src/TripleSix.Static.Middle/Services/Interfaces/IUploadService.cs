@@ -5,8 +5,8 @@ using TripleSix.Static.Common.Dto;
 
 namespace TripleSix.Static.Middle.Services
 {
-    public interface ISettingService : IService
+    public interface IUploadService : IService
     {
-        Task<SettingDataDto> Get(IIdentity identity, bool validateSetting = false);
+        Task<UploadResultDto[]> UploadFile(IIdentity identity, UploadInputDto input);
     }
 }

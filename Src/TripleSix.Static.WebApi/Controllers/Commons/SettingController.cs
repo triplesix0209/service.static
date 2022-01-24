@@ -16,11 +16,11 @@ namespace TripleSix.Static.WebApi.Controllers.Commons
 
         [HttpGet]
         [SwaggerOperation("lấy danh sách thiết lập")]
-        [SwaggerResponse(200, null, typeof(DataResult<SettingDataDto[]>))]
+        [SwaggerResponse(200, null, typeof(DataResult<SettingDataDto>))]
         public async Task<IActionResult> GetList()
         {
             var identity = GenerateIdentity<Identity>();
-            var data = await SettingService.GetList(identity);
+            var data = await SettingService.Get(identity, false);
             return DataResult(data);
         }
     }
