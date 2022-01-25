@@ -20,5 +20,6 @@ RUN dotnet publish "TripleSix.Static.WebApi.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN apt-get update -qq
 RUN apt-get install -yq libgdiplus
 ENTRYPOINT ["dotnet", "TripleSix.Static.WebApi.dll"]
