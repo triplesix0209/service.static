@@ -27,8 +27,14 @@ namespace TripleSix.Static.Common
 
     public enum AppExceptions
     {
+        [ErrorData(500, message: "setting 'uploadKeyTimelife' is invalid")]
+        UploadKeyTimelifeInvalid,
+
         [ErrorData(500, message: "setting 'baseResultUrl' is invalid")]
         BaseResultUrlInvalid,
+
+        [ErrorData(401, message: "key is invalid")]
+        KeyInvalid,
 
         [ErrorData(400, message: "mine type {0} is not allowed")]
         MineTypeNotAllow,

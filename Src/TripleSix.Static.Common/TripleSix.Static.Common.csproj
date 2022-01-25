@@ -8,6 +8,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="GoogleAuthenticator" Version="2.4.0" />
     <PackageReference Include="TripleSix.Core" Version="5.0.8" />
   </ItemGroup>
 

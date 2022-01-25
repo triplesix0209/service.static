@@ -12,5 +12,8 @@ namespace TripleSix.Static.Common.Dto
 
         [DisplayName("danh sách file")]
         public IFormFile[] Files { get; set; }
+
+        [DisplayName("upload key")]
+        public string Key { get; set; }
     }
 }

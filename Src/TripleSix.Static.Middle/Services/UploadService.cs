@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Authenticator;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,21 @@ namespace TripleSix.Static.Middle.Services
             #region [validate]
 
             var setting = await SettingService.Get(identity, true);
+
+            if (!setting.AllowAnonymous)
+            {
+                var factor = new TwoFactorAuthenticator();
+                if (setting.UploadKeyTimelife.HasValue)
+                {
+                    if (!factor.ValidateTwoFactorPIN(setting.UploadSecretKey, input.Key, TimeSpan.FromSeconds(setting.UploadKeyTimelife.Value), true))
+                        throw new AppException(AppExceptions.KeyInvalid);
+                }
+                else
+                {
+                    if (!factor.ValidateTwoFactorPIN(setting.UploadSecretKey, input.Key, true))
+                        throw new AppException(AppExceptions.KeyInvalid);
+                }
+            }
 
             if (setting.AllowMineTypes.IsNotNullOrEmpty())
             {

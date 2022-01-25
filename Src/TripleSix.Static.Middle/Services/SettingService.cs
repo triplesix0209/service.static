@@ -16,6 +16,8 @@ namespace TripleSix.Static.Middle.Services
         public Task<SettingDataDto> Get(IIdentity identity, bool validateSetting = false)
         {
             var result = new SettingDataDto();
+            result.UploadSecretKey = Configuration.GetValue<string>($"{_baseSetting}:UploadSecretKey", null);
+            result.UploadKeyTimelife = Configuration.GetValue<int?>($"{_baseSetting}:UploadKeyTimelife", null);
             result.BaseResultUrl = Configuration.GetValue<string>($"{_baseSetting}:BaseResultUrl", null);
             result.AllowMineTypes = Configuration.GetValue<string>($"{_baseSetting}:AllowMineTypes", null)
                 ?.Split(",");
@@ -23,6 +25,9 @@ namespace TripleSix.Static.Middle.Services
 
             if (validateSetting)
             {
+                if (result.UploadKeyTimelife.HasValue && result.UploadKeyTimelife.Value <= 0)
+                    throw new AppException(AppExceptions.UploadKeyTimelifeInvalid);
+
                 if (result.BaseResultUrl.IsNullOrWhiteSpace())
                     throw new AppException(AppExceptions.BaseResultUrlInvalid);
             }

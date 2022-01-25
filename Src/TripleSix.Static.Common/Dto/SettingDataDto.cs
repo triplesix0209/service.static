@@ -1,10 +1,21 @@
 ﻿using System.ComponentModel;
+using Newtonsoft.Json;
 using TripleSix.Core.Dto;
+using TripleSix.Core.Extensions;
 
 namespace TripleSix.Static.Common.Dto
 {
     public class SettingDataDto : DataDto
     {
+        [JsonIgnore]
+        public string UploadSecretKey { get; set; }
+
+        [JsonIgnore]
+        public int? UploadKeyTimelife { get; set; }
+
+        [DisplayName("cho phép upload tự do")]
+        public bool AllowAnonymous => UploadSecretKey.IsNullOrWhiteSpace();
+
         [DisplayName("base url của link kết quả")]
         public string BaseResultUrl { get; set; }
 
