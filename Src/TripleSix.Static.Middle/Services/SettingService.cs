@@ -17,6 +17,7 @@ namespace TripleSix.Static.Middle.Services
         {
             var result = new SettingDataDto();
             result.UploadSecretKey = Configuration.GetValue<string>($"{_baseSetting}:UploadSecretKey", null);
+            result.UploadPinTimelife = Configuration.GetValue($"{_baseSetting}:UploadPinTimelife", 60);
             result.BaseResultUrl = Configuration.GetValue<string>($"{_baseSetting}:BaseResultUrl", null);
             result.AllowMineTypes = Configuration.GetValue<string>($"{_baseSetting}:AllowMineTypes", null)
                 ?.Split(",");
@@ -24,6 +25,9 @@ namespace TripleSix.Static.Middle.Services
 
             if (validateSetting)
             {
+                if (result.UploadPinTimelife <= 0)
+                    throw new AppException(AppExceptions.UploadPinTimelifeInvalid);
+
                 if (result.BaseResultUrl.IsNullOrWhiteSpace())
                     throw new AppException(AppExceptions.BaseResultUrlInvalid);
             }

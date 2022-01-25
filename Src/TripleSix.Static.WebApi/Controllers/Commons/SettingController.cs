@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Google.Authenticator;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TripleSix.Core.WebApi.Results;
@@ -24,13 +25,14 @@ namespace TripleSix.Static.WebApi.Controllers.Commons
             return DataResult(data);
         }
 
-        //[HttpGet("SecretKey")]
-        //public IActionResult GetSecretKey()
-        //{
-        //    var key = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
-        //    var factor = new TwoFactorAuthenticator();
-        //    var setupInfo = factor.GenerateSetupCode("Static API", "triplesix0209@gmail.com", key, false);
-        //    return DataResult(setupInfo.ManualEntryKey);
-        //}
+        [HttpGet("SecretKey")]
+        public async Task<IActionResult> GetSecretKey()
+        {
+            var identity = GenerateIdentity<Identity>();
+            var setting = await SettingService.Get(identity, false);
+            var factor = new TwoFactorAuthenticator();
+            var setupInfo = factor.GenerateSetupCode("Static API", "triplesix0209@gmail.com", setting.UploadSecretKey, false);
+            return DataResult(setupInfo.ManualEntryKey);
+        }
     }
 }
