@@ -39,7 +39,7 @@ namespace TripleSix.Static.WebApi.Controllers.Commons
                 return DataResult<string>(null);
 
             var factor = new TwoFactorAuthenticator();
-            var setupInfo = factor.GenerateSetupCode("Static API", "triplesix0209@gmail.com", setting.UploadSecretKey, false);
+            var setupInfo = factor.GenerateSetupCode("Static API", "triplesix0209@gmail.com", setting.UploadSecretKey, false, 3);
             return DataResult(setupInfo.ManualEntryKey);
         }
 
