@@ -27,6 +27,9 @@ namespace TripleSix.Static.Common
 
     public enum AppExceptions
     {
+        [ErrorData(403, message: "this api only work on debug mode")]
+        WorkOnlyDebugMode,
+
         [ErrorData(500, message: "setting 'baseResultUrl' is invalid")]
         BaseResultUrlInvalid,
 

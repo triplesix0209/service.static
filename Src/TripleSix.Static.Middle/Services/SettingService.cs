@@ -16,6 +16,7 @@ namespace TripleSix.Static.Middle.Services
         public Task<SettingDataDto> Get(IIdentity identity, bool validateSetting = false)
         {
             var result = new SettingDataDto();
+            result.DebugMode = Configuration.GetValue<bool>($"{_baseSetting}:DebugMode", false);
             result.UploadSecretKey = Configuration.GetValue<string>($"{_baseSetting}:UploadSecretKey", null);
             result.UploadPinTimelife = Configuration.GetValue($"{_baseSetting}:UploadPinTimelife", 60);
             result.BaseResultUrl = Configuration.GetValue<string>($"{_baseSetting}:BaseResultUrl", null);

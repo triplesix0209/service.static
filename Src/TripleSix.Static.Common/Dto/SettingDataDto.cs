@@ -8,6 +8,9 @@ namespace TripleSix.Static.Common.Dto
     public class SettingDataDto : DataDto
     {
         [JsonIgnore]
+        public bool DebugMode { get; set; }
+
+        [JsonIgnore]
         public string UploadSecretKey { get; set; }
 
         [JsonIgnore]
