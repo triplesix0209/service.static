@@ -27,9 +27,6 @@ namespace TripleSix.Static.Common
 
     public enum AppExceptions
     {
-        [ErrorData(500, message: "setting 'uploadKeyTimelife' is invalid")]
-        UploadKeyTimelifeInvalid,
-
         [ErrorData(500, message: "setting 'baseResultUrl' is invalid")]
         BaseResultUrlInvalid,
 

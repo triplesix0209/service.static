@@ -35,16 +35,8 @@ namespace TripleSix.Static.Middle.Services
             if (!setting.AllowAnonymous)
             {
                 var factor = new TwoFactorAuthenticator();
-                if (setting.UploadKeyTimelife.HasValue)
-                {
-                    if (!factor.ValidateTwoFactorPIN(setting.UploadSecretKey, input.Key, TimeSpan.FromSeconds(setting.UploadKeyTimelife.Value), true))
-                        throw new AppException(AppExceptions.KeyInvalid);
-                }
-                else
-                {
-                    if (!factor.ValidateTwoFactorPIN(setting.UploadSecretKey, input.Key, true))
-                        throw new AppException(AppExceptions.KeyInvalid);
-                }
+                if (!factor.ValidateTwoFactorPIN(setting.UploadSecretKey, input.Key))
+                    throw new AppException(AppExceptions.KeyInvalid);
             }
 
             if (setting.AllowMineTypes.IsNotNullOrEmpty())

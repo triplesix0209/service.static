@@ -10,9 +10,6 @@ namespace TripleSix.Static.Common.Dto
         [JsonIgnore]
         public string UploadSecretKey { get; set; }
 
-        [JsonIgnore]
-        public int? UploadKeyTimelife { get; set; }
-
         [DisplayName("cho phép upload tự do")]
         public bool AllowAnonymous => UploadSecretKey.IsNullOrWhiteSpace();
 
