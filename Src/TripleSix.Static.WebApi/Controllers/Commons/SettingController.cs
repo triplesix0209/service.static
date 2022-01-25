@@ -28,7 +28,7 @@ namespace TripleSix.Static.WebApi.Controllers.Commons
         }
 
         [HttpGet("SecretKey")]
-        [SwaggerOperation("lấy secret key, chỉ hoạt động ở Debug Mode")]
+        [SwaggerOperation("lấy secret key", Description = "chỉ hoạt động ở Debug Mode")]
         [SwaggerResponse(200, null, typeof(DataResult<string>))]
         public async Task<IActionResult> GetSecretKey()
         {
@@ -44,7 +44,7 @@ namespace TripleSix.Static.WebApi.Controllers.Commons
         }
 
         [HttpGet("UploadKey")]
-        [SwaggerOperation("lấy danh sách upload key, chỉ hoạt động ở Debug Mode")]
+        [SwaggerOperation("lấy danh sách upload key", Description = "chỉ hoạt động ở Debug Mode")]
         [SwaggerResponse(200, null, typeof(DataResult<string[]>))]
         public async Task<IActionResult> GetUploadKey()
         {
