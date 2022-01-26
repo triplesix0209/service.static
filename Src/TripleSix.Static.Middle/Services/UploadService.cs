@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Google.Authenticator;
 using TripleSix.Core.Dto;
 using TripleSix.Core.Extensions;
 using TripleSix.Static.Common;
 using TripleSix.Static.Common.Dto;
 using TripleSix.Static.Middle.Abstracts;
+using TripleSix.Static.Middle.Helpers;
 
 namespace TripleSix.Static.Middle.Services
 {
     public class UploadService : CommonService,
         IUploadService
     {
-        protected const string _uploadDir = "Uploads";
-
         public ISettingService SettingService { get; set; }
 
         public async Task<UploadResultDto[]> UploadFile(IIdentity identity, UploadInputDto input)
@@ -31,21 +29,7 @@ namespace TripleSix.Static.Middle.Services
             #region [validate]
 
             var setting = await SettingService.Get(identity, true);
-
-            if (!setting.AllowAnonymous)
-            {
-                if (!setting.UploadDynamicKey)
-                {
-                    if (input.Key != setting.UploadSecretKey)
-                        throw new AppException(AppExceptions.KeyInvalid);
-                }
-                else
-                {
-                    var factor = new TwoFactorAuthenticator();
-                    if (!factor.ValidateTwoFactorPIN(setting.UploadSecretKey, input.Key, TimeSpan.FromSeconds(setting.UploadDynamicKeyTimelife)))
-                        throw new AppException(AppExceptions.KeyInvalid);
-                }
-            }
+            ValidateHelper.ValidateKey(setting, input.Key);
 
             if (setting.AllowMineTypes.IsNotNullOrEmpty())
             {
@@ -67,29 +51,20 @@ namespace TripleSix.Static.Middle.Services
             var result = new List<UploadResultDto>();
             foreach (var file in input.Files)
             {
-                #region [generate file name]
-
-                string fileName;
-                if (input.GenerateFileName == true)
-                    fileName = Guid.NewGuid().ToString("N").ToLower() + Path.GetExtension(file.FileName);
-                else
-                    fileName = file.FileName;
-
-                #endregion
-
                 #region [prepare]
 
                 var uploadDir = Path.Combine(
-                        _uploadDir,
-                        file.ContentType.Split("/")[0],
-                        now.Year.ToString(),
-                        now.Month.ToString("00"),
-                        now.Day.ToString("00"));
+                    setting.BaseUploadDir,
+                    file.ContentType.Split("/")[0],
+                    now.Year.ToString(),
+                    now.Month.ToString("00"),
+                    now.Day.ToString("00"));
 
                 if (!Directory.Exists(uploadDir))
                     Directory.CreateDirectory(uploadDir);
 
                 var uploadUrl = $"{file.ContentType.Split("/")[0]}/{now.Year}/{now.Month.ToString("00")}/{now.Day.ToString("00")}";
+                var fileName = Guid.NewGuid().ToString("N").ToLower() + Path.GetExtension(file.FileName);
 
                 #endregion
 
@@ -100,9 +75,11 @@ namespace TripleSix.Static.Middle.Services
 
                 #endregion
 
+                var url = new Uri($"{setting.BaseResultUrl}/{uploadUrl}/{fileName}");
                 result.Add(new UploadResultDto
                 {
-                    Url = new Uri($"{setting.BaseResultUrl}/{uploadUrl}/{fileName}"),
+                    FilePath = url.LocalPath.Substring(1),
+                    Url = url,
                 });
             }
 

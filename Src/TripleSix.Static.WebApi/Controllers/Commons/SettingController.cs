@@ -35,14 +35,11 @@ namespace TripleSix.Static.WebApi.Controllers.Commons
             var identity = GenerateIdentity<Identity>();
             var setting = await SettingService.Get(identity, false);
             if (!setting.DebugMode) throw new AppException(AppExceptions.WorkOnlyDebugMode);
-            if (setting.UploadSecretKey.IsNullOrWhiteSpace())
+            if (setting.SecretKey.IsNullOrWhiteSpace() || !setting.DynamicKeyEnable)
                 return DataResult<string>(null);
 
-            if (!setting.UploadDynamicKey)
-                return DataResult(setting.UploadSecretKey);
-
             var factor = new TwoFactorAuthenticator();
-            var setupInfo = factor.GenerateSetupCode("Static API", "triplesix0209@gmail.com", setting.UploadSecretKey, false, 3);
+            var setupInfo = factor.GenerateSetupCode("Static API", "triplesix0209@gmail.com", setting.SecretKey, false, 3);
             return DataResult(setupInfo.ManualEntryKey);
         }
 
@@ -54,11 +51,14 @@ namespace TripleSix.Static.WebApi.Controllers.Commons
             var identity = GenerateIdentity<Identity>();
             var setting = await SettingService.Get(identity, false);
             if (!setting.DebugMode) throw new AppException(AppExceptions.WorkOnlyDebugMode);
-            if (setting.UploadSecretKey.IsNullOrWhiteSpace())
-                return DataResult<string>(null);
+            if (setting.SecretKey.IsNullOrWhiteSpace())
+                return DataResult<string[]>(null);
+
+            if (!setting.DynamicKeyEnable)
+                return DataResult(new[] { setting.SecretKey });
 
             var factor = new TwoFactorAuthenticator();
-            var result = factor.GetCurrentPINs(setting.UploadSecretKey, TimeSpan.FromSeconds(setting.UploadPinTimelife));
+            var result = factor.GetCurrentPINs(setting.SecretKey, TimeSpan.FromSeconds(setting.DynamicKeyTimelife));
             return DataResult(result);
         }
     }

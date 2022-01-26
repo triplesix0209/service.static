@@ -30,11 +30,11 @@ namespace TripleSix.Static.Common
         [ErrorData(403, message: "this api only work on debug mode")]
         WorkOnlyDebugMode,
 
-        [ErrorData(500, message: "setting 'baseResultUrl' is invalid")]
-        BaseResultUrlInvalid,
+        [ErrorData(500, message: "setting '{0}' is invalid")]
+        SettingInvalid,
 
-        [ErrorData(500, message: "setting 'uploadDynamicKeyTimelife' is invalid")]
-        UploadDynamicKeyTimelifeInvalid,
+        [ErrorData(400, message: "parameter '{0}' is invalid")]
+        ParameterInvalid,
 
         [ErrorData(401, message: "key is invalid")]
         KeyInvalid,

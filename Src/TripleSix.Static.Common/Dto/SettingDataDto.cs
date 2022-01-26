@@ -11,16 +11,22 @@ namespace TripleSix.Static.Common.Dto
         public bool DebugMode { get; set; }
 
         [JsonIgnore]
-        public string UploadSecretKey { get; set; }
+        public string BaseUploadDir { get; set; }
 
         [JsonIgnore]
-        public bool UploadDynamicKey { get; set; }
+        public string BaseCacheDir { get; set; }
 
         [JsonIgnore]
-        public int UploadDynamicKeyTimelife { get; set; }
+        public string SecretKey { get; set; }
+
+        [JsonIgnore]
+        public bool DynamicKeyEnable { get; set; }
+
+        [JsonIgnore]
+        public int DynamicKeyTimelife { get; set; }
 
         [DisplayName("cho phép upload tự do")]
-        public bool AllowAnonymous => UploadSecretKey.IsNullOrWhiteSpace();
+        public bool AllowAnonymous => SecretKey.IsNullOrWhiteSpace();
 
         [DisplayName("base url của link kết quả")]
         public string BaseResultUrl { get; set; }
