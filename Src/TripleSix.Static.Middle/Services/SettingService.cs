@@ -16,9 +16,10 @@ namespace TripleSix.Static.Middle.Services
         public Task<SettingDataDto> Get(IIdentity identity, bool validateSetting = false)
         {
             var result = new SettingDataDto();
-            result.DebugMode = Configuration.GetValue<bool>($"{_baseSetting}:DebugMode", false);
+            result.DebugMode = Configuration.GetValue($"{_baseSetting}:DebugMode", false);
             result.UploadSecretKey = Configuration.GetValue<string>($"{_baseSetting}:UploadSecretKey", null);
-            result.UploadPinTimelife = Configuration.GetValue($"{_baseSetting}:UploadPinTimelife", 60);
+            result.UploadDynamicKey = Configuration.GetValue($"{_baseSetting}:UploadDynamicKey", true);
+            result.UploadDynamicKeyTimelife = Configuration.GetValue($"{_baseSetting}:UploadDynamicKeyTimelife", 60);
             result.BaseResultUrl = Configuration.GetValue<string>($"{_baseSetting}:BaseResultUrl", null);
             result.AllowMineTypes = Configuration.GetValue<string>($"{_baseSetting}:AllowMineTypes", null)
                 ?.Split(",");
@@ -26,8 +27,8 @@ namespace TripleSix.Static.Middle.Services
 
             if (validateSetting)
             {
-                if (result.UploadPinTimelife <= 0)
-                    throw new AppException(AppExceptions.UploadPinTimelifeInvalid);
+                if (result.UploadDynamicKeyTimelife <= 0)
+                    throw new AppException(AppExceptions.UploadDynamicKeyTimelifeInvalid);
 
                 if (result.BaseResultUrl.IsNullOrWhiteSpace())
                     throw new AppException(AppExceptions.BaseResultUrlInvalid);

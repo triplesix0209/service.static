@@ -14,7 +14,10 @@ namespace TripleSix.Static.Common.Dto
         public string UploadSecretKey { get; set; }
 
         [JsonIgnore]
-        public int UploadPinTimelife { get; set; }
+        public bool UploadDynamicKey { get; set; }
+
+        [JsonIgnore]
+        public int UploadDynamicKeyTimelife { get; set; }
 
         [DisplayName("cho phép upload tự do")]
         public bool AllowAnonymous => UploadSecretKey.IsNullOrWhiteSpace();

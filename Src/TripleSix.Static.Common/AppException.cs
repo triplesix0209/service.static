@@ -33,8 +33,8 @@ namespace TripleSix.Static.Common
         [ErrorData(500, message: "setting 'baseResultUrl' is invalid")]
         BaseResultUrlInvalid,
 
-        [ErrorData(500, message: "setting 'uploadPinTimelife' is invalid")]
-        UploadPinTimelifeInvalid,
+        [ErrorData(500, message: "setting 'uploadDynamicKeyTimelife' is invalid")]
+        UploadDynamicKeyTimelifeInvalid,
 
         [ErrorData(401, message: "key is invalid")]
         KeyInvalid,

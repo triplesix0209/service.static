@@ -1,9 +1,9 @@
-﻿using Google.Authenticator;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Google.Authenticator;
 using TripleSix.Core.Dto;
 using TripleSix.Core.Extensions;
 using TripleSix.Static.Common;
@@ -34,9 +34,17 @@ namespace TripleSix.Static.Middle.Services
 
             if (!setting.AllowAnonymous)
             {
-                var factor = new TwoFactorAuthenticator();
-                if (!factor.ValidateTwoFactorPIN(setting.UploadSecretKey, input.Key, TimeSpan.FromSeconds(setting.UploadPinTimelife)))
-                    throw new AppException(AppExceptions.KeyInvalid);
+                if (!setting.UploadDynamicKey)
+                {
+                    if (input.Key != setting.UploadSecretKey)
+                        throw new AppException(AppExceptions.KeyInvalid);
+                }
+                else
+                {
+                    var factor = new TwoFactorAuthenticator();
+                    if (!factor.ValidateTwoFactorPIN(setting.UploadSecretKey, input.Key, TimeSpan.FromSeconds(setting.UploadDynamicKeyTimelife)))
+                        throw new AppException(AppExceptions.KeyInvalid);
+                }
             }
 
             if (setting.AllowMineTypes.IsNotNullOrEmpty())
