@@ -38,6 +38,9 @@ namespace TripleSix.Static.WebApi.Controllers.Commons
             if (setting.UploadSecretKey.IsNullOrWhiteSpace())
                 return DataResult<string>(null);
 
+            if (!setting.UploadDynamicKey)
+                return DataResult(setting.UploadSecretKey);
+
             var factor = new TwoFactorAuthenticator();
             var setupInfo = factor.GenerateSetupCode("Static API", "triplesix0209@gmail.com", setting.UploadSecretKey, false, 3);
             return DataResult(setupInfo.ManualEntryKey);
