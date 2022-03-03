@@ -4,6 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using TripleSix.Core.Extensions;
 
 namespace TripleSix.Static.WebApi
 {
@@ -17,6 +18,7 @@ namespace TripleSix.Static.WebApi
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             var envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (envName.IsNullOrWhiteSpace()) envName = "Production";
 
             var config = new ConfigurationBuilder()
                 .AddJsonFile(Path.Combine("Config", "appsettings.json"), true)
